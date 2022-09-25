@@ -77,3 +77,20 @@ you can install it on ubuntu using this command:
 <b>Note</b>: I found that this device tree is the most compatible one with the overlays. I tried others like bcm2837.
 
 <img src="imgs/dtb.png">
+
+
+# 4- Configure the raspberry pi through `config.txt`
+
+Your `config.txt` should have these lines:
+
+<img src="imgs/config-txt.png">
+
+- `enable_uart=1` is basically enabling the the uart to be used by `u-boot.bin`
+
+- `kernel=u-boot.bin` gives the kernel name to be loaded which is `u-boot.bin` in our case.
+
+- `arm_64bit=1` forces the kernel loading system to assume a 64-bit kernel, starts the processors up in 64-bit mode.
+
+- `core_freq=250` Frequency of the GPU processor core in MHz.
+
+- `device_tree` specifiy the name of the `.dtb` file to be loaded.
