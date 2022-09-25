@@ -94,3 +94,47 @@ Your `config.txt` should have these lines:
 - `core_freq=250` Frequency of the GPU processor core in MHz.
 
 - `device_tree` specifiy the name of the `.dtb` file to be loaded.
+
+# 5- `u-boot.bin` build
+
+1. clone `u-boot` repository
+
+    `git clone https://github.com/u-boot/u-boot --depth=1`
+
+1. set the rpi3b+ default configuration
+
+    `make rpi_3_b_plus_defconfig ARCH=arm CROSS_COMPILE=aarch64-linux-gnu-`
+
+1. Make further configuration
+
+    `make menuconfig ARCH=arm CROSS_COMPILE=aarch64-linux-gnu-`
+
+    - Save fdt address, passed by the previous bootloader `start.elf`, to env vat `prevbl_fdt_addr` you can find it here:
+        
+        `Boot options->Save fdt address`
+
+    - Change the Shell prompt to my username, you can find it here:
+
+        `Command Line Interafce->Shell Command`
+    
+    - Increase the autoboot delay to 20 seconds so that we can have enough time to interrupt the autoboot, you can find it here:
+
+        `Boot options->Autoboot options->delay`
+    
+
+
+1. Build `u-boot`
+
+    - There's an issue I found when I tried to build `u-boot` which is multiple definitions of the function `save_boot_params`. I could get over this by deleting the implementation in board/raspberrypi/rpi/lowlevel_init.S.
+
+    - Now you can run:
+
+        `make -j12 ARCH=arm CROSS_COMPILE=aarch64-linux-gnu-`
+
+    - Move `u-boot-bin` to the boot filesystem
+
+    <img src="imgs/u-boot.png">
+
+    - Plug the usb drive into the raspberry pi. At this point, the u-boot should boot successfully.
+
+<img src="imgs/u-boot-op.png">
