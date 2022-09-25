@@ -36,10 +36,44 @@ This is my USB drive partitions.
 There are vendor-specific files that should exist in the `boot` filesystem. These files are:
 
 1. `boocode.bin`: this is the bootloader, which is loaded by the SoC on boot, does some very basic setup, and then loads the `start.elf` file.
-1. `start.elf`: its job is to combine overlays with an appropriate base device tree, and then to pass a fully resolved Device Tree to the kernel.
+1. `start.elf`: its job is to combine overlays with an appropriate base device tree, and then to pass a fully resolved Device Tree to u-boot.
 1. `config.txt`: Contains many configuration parameters for setting up the Raspberry Pi.
 1. `fixup.dat`: This is a linker file.
 
 Those files can be found in the firmware repository of raspberry pi <a href="https://github.com/raspberrypi/firmware/tree/master/boot">here</a>.
 
 <img src="imgs/vendor-specific.png">
+
+# 3- Build a Device Tree Binary (DTB)
+
+u-boot expects a flattened device tree (FDT) from the start.elf bootloader. The start.elf bootloader needs a device tree binary.dtb file to turn it into an FDT and pass it to u-boot. At this moment, we don't have one. So, we need to compile a device tree source first.
+
+
+1. We need to clone the Linux kernel. We have two options. The first option is to clone the Linux repository and start configuring the kernel without any default configuration. This is a lot of work. The second option, which I chose, is to clone the Linux kernel maintained by the Raspberry Pi because it provides a default configuration to start from.
+
+    The kernel repository can be found <a href="https://github.com/raspberrypi/linux">here</a>. You can just run 
+
+    `git clone https://github.com/raspberrypi/linux --depth=1`
+
+    `--depth=1` makes sure that we don't get the whole linux repository history which is so big and not useful for our case. We just need the latest tag.
+
+1. We need to have the cross compiler `aarch64-linux-gnu-`
+you can install it on ubuntu using this command:
+
+    `sudo apt-get install gcc-aarch64-linux-gnu`
+
+1. Configure the linux kernel using this command:
+
+    `make bcmrpi3_defconfig ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu-`
+
+1. Compile the DTBs using this command:
+
+    `make -j12 dtbs ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu-`
+
+1. Move the compiled Device Tree Binary file to the boot filesystem. You can find it under 
+
+    `arch/arm64/boot/dts/broadcom/bcm2710-rpi-3-b-plus.dtb`
+
+<b>Note</b>: I found that this device tree is the most compatible one with the overlays. I tried others like bcm2837.
+
+<img src="imgs/dtb.png">
