@@ -30,3 +30,16 @@ You can partition your SD card using either the Ubuntu Disks utility or `fdisk` 
 
 <img src="imgs/partitions.png">
 This is my USB drive partitions.
+
+# 2- Vendor-specific bootloaders and files
+
+There are vendor-specific files that should exist in the `boot` filesystem. These files are:
+
+1. `boocode.bin`: this is the bootloader, which is loaded by the SoC on boot, does some very basic setup, and then loads the `start.elf` file.
+1. `start.elf`: its job is to combine overlays with an appropriate base device tree, and then to pass a fully resolved Device Tree to the kernel.
+1. `config.txt`: Contains many configuration parameters for setting up the Raspberry Pi.
+1. `fixup.dat`: This is a linker file.
+
+Those files can be found in the firmware repository of raspberry pi <a href="https://github.com/raspberrypi/firmware/tree/master/boot">here</a>.
+
+<img src="imgs/vendor-specific.png">
