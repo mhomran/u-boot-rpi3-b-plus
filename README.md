@@ -210,3 +210,82 @@ If you got something like that, then you booted the kernel successfully. The las
 
 reference:
 https://www.kernel.org/doc/html/v4.14/admin-guide/kernel-parameters.html
+
+# 7- Build the filesystem
+
+We'll use <a href="https://busybox.net/">busybox</a> to build the root filesystem. 
+
+1. Clone the repository:
+    `git clone https://github.com/mirror/busybox`
+
+1. We don't need a default configuration, so we'll skip this step.
+
+1. We can start configuring using this command:
+
+    `make menuconfig CROSS_COMPILE=aarch64-linux-gnu-`
+
+    - Make the a static binary (no shared libs). We can find that option under 
+
+    `settings->Build Static Binary`
+
+    - Determine the cross compiler. You can find it under this option:
+
+    `settings->Cross compiler prefix`
+
+    <b>IMPORTANT NOTE:</b> I tried passing  CROSS_COMPILE=aarch64-linux-gnu- to `make menuconfig` but it didn't consider it. I just found it after I tried to use the filesystem and it didn't work. Be careful and determine it after running `make menuconfig`.
+
+1. Build the busybox using this command:
+
+    `make -j12`
+
+1. Install the filesystem using this command:
+
+    `make install`
+
+    The installed filesystem could be found in `./_install` folder. Copy it to the filesystem partition.
+
+1. Make the `rcS` script that will remount the filesystem as read/write and do other stuff.
+
+    `mkdir _install/etc`
+
+    `mkdir _install/etc/init.d`
+
+    `vi _install/etc/init.d/rcS`
+
+    copy this and paste it in the `rcS` file
+    
+    <code>
+    #!/bin/sh
+    
+    mount -t proc none /proc
+    
+    mount -o remount,rw /
+    
+    mount -t sysfs none /sys
+    
+    echo /sbin/mdev > /proc/sys/kernel/hotplug
+    
+    mdev -s
+    </code>
+
+    Make it excutable
+
+    `chmod +x _install/etc/init.d/rcS`
+
+1. Create important folders:
+    
+    `mkdir _install/proc`
+
+    `mkdir _install/sys`
+    
+    `mkdir _install/dev`
+
+1. Copy _install to the root filesystem partition
+
+    `cp -r _install/* /media/mhomran/rootfs`
+
+
+Plug in the USB drive into the raspberry pi and start the kernel by doing step #6 once more.
+
+<img src="imgs/rootfs.png">
+My root filesystem !
