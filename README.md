@@ -222,7 +222,7 @@ We'll use <a href="https://busybox.net/">busybox</a> to build the root filesyste
 
 1. We can start configuring using this command:
 
-    `make menuconfig CROSS_COMPILE=aarch64-linux-gnu-`
+    `make menuconfig`
 
     - Make the a static binary (no shared libs). We can find that option under 
 
