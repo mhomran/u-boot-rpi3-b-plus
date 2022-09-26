@@ -162,3 +162,51 @@ Note: for 64bit kernel, there's no option for making a compressed image e.g. zIm
 Note: you can setup a trivial ftp server and grap the image from the host machine. (to be discussed later)
 
 <img src="imgs/kernel-image.png">
+
+# 6- Booting the kernel and the `bootargs`
+
+
+For u-boot to be able to boot the kernel, it should have the kernel and the device tree binary address. The kernel expects some boot arguments. Boot arguments configure things in the kernel. For u-boot to be able to pass the boot arguments, we need to put them in an environment variable `bootargs` using the command `setenv`.
+
+
+Now let's consider booting the kernel step by step:
+
+
+1. Turn your raspberry pi on and let u-boot starts and interrupt the autoboot by pressing any key.
+1. You should load the kernel into the RAM. You can run this command in u-boot:
+
+
+`fatload usb 0 ${kernel_addr_r} Image`
+1. We have the address of the binary tree binary given to u-boot store in `prevbl_fdt_addr`. So, we don't need to load any DTB.
+1. We need to specify the bootargs. You can run:
+
+
+`setenv bootargs "8250.nr_uarts=1 root=/dev/sda2 rootwait console=ttyS0,115200n8"`
+
+
+`8250.nr_uarts=1` specifies the number of serial ports supported. In our case, it's one serial port `ttyS0`.
+
+
+`root=/dev/sda2` specify the partition of the root filesystem.
+
+
+`rootwait` Wait (indefinitely) for the root device to show up. Useful for devices that are detected asynchronously (e.g. USB and MMC devices).
+
+
+`console=ttyS0,115200n8` tells the kernel to start a console for us on the serial port `ttyS0` with the baudrate of 115200 with no parity and the data size is 8 bytes.
+
+
+1. Now, we're ready to boot our kernel using the command:
+
+
+`booti ${kernel_addr_r} - ${prevbl_addr_r}`
+
+
+<img src="imgs/no-init.png">
+
+
+If you got something like that, then you booted the kernel successfully. The last message indicates that there's no init file, which should exist in the root filesystem at /sbin/init. In the next section, we'll make it using `busybox`.
+
+
+reference:
+https://www.kernel.org/doc/html/v4.14/admin-guide/kernel-parameters.html
