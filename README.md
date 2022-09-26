@@ -254,7 +254,7 @@ We'll use <a href="https://busybox.net/">busybox</a> to build the root filesyste
 
     copy this and paste it in the `rcS` file
     
-    <code>
+    ```
     #!/bin/sh
     
     mount -t proc none /proc
@@ -266,7 +266,7 @@ We'll use <a href="https://busybox.net/">busybox</a> to build the root filesyste
     echo /sbin/mdev > /proc/sys/kernel/hotplug
     
     mdev -s
-    </code>
+    ```
 
     Make it excutable
 
