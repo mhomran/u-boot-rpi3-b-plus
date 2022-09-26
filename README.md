@@ -138,3 +138,27 @@ Your `config.txt` should have these lines:
     - Plug the usb drive into the raspberry pi. At this point, the u-boot should boot successfully.
 
 <img src="imgs/u-boot-op.png">
+u-boot is bootloaded !
+
+# 6- Building the kernel
+
+In step 3, we just built the device tree binaries. There are two more steps to build our custom kernel:
+    
+1. Configure the kernel with this command:
+
+    `make menuconfig ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu-`
+
+
+1. build the kernel with this command:
+
+    `make -j12 Image ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu-`
+
+1. Move the Image to the boot filesystem. You can find it under:
+   
+    `arch/arm64/boot/Image`
+
+Note: for 64bit kernel, there's no option for making a compressed image e.g. zImage
+
+Note: you can setup a trivial ftp server and grap the image from the host machine. (to be discussed later)
+
+<img src="imgs/kernel-image.png">
