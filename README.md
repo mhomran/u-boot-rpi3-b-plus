@@ -26,7 +26,7 @@ To get over this problem, we can <b>reuse</b> the same `FDT` offered by `start.e
 
 Your USB drive should have two partitions. One should be in `FAT` format. Usually, it's called `boot`. This filesystem will hold the kernel files, the bootloaders, device trees, and overlays. Another one can be in ext4 format. This one holds the linux file system. It's usually called `rootfs`. The file system size should be large enough to hold the content in it.
 
-You can partition your SD card using either the Ubuntu Disks utility or `fdisk` command. There are plenty of sources out there to show you how to partition your drive.
+You can partition your USB drive using either the Ubuntu Disks utility or `fdisk` command. There are plenty of sources out there to show you how to partition your drive.
 
 <img src="imgs/partitions.png">
 This is my USB drive partitions.
