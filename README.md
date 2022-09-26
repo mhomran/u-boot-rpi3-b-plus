@@ -13,7 +13,7 @@ I use a USB drive to boot my custom kernel and not an SD card. A USB drive is mu
 <img src="imgs/boot-process.png" width="200">
 
 
-First, the ROM bootloader shipped with the vendor starts. Then, the second bootloader `bootcode.bin` starts. After that, `start.elf` starts and makes a Flattened Device Tree (FDT) using the device tree binary .dtb in the boot folder and applies overlays that're written in `config.txt`.
+First, the ROM bootloader starts and loads the second bootloader in the L2 Cache. Then, the second bootloader `bootcode.bin` starts and enables SDRAM and loads `start.elf`. After that, `start.elf` starts and makes a Flattened Device Tree (FDT) using the device tree binary .dtb in the boot folder and applies overlays that're written in `config.txt`.
 
 
 It's important to mention how to apply a device tree overlay when it comes to raspberry pi. `u-boot` uses a library called `libfdt` to deal with device trees and apply overlays to them. Unfortunately, raspberry pi device trees don't follow the standard that this library uses. So, whenever I tried to apply an overlay, it always fails with `FDT_ERR_NOTFOUND`.
