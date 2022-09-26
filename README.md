@@ -163,7 +163,7 @@ Note: you can setup a trivial ftp server and grap the image from the host machin
 
 <img src="imgs/kernel-image.png">
 
-# 6- Booting the kernel and the `bootargs`
+# 7- Booting the kernel and the `bootargs`
 
 
 For u-boot to be able to boot the kernel, it should have the kernel and the device tree binary address. The kernel expects some boot arguments. Boot arguments configure things in the kernel. For u-boot to be able to pass the boot arguments, we need to put them in an environment variable `bootargs` using the command `setenv`.
@@ -172,7 +172,7 @@ For u-boot to be able to boot the kernel, it should have the kernel and the devi
 Now let's consider booting the kernel step by step:
 
 
-1. Turn your raspberry pi on and let u-boot starts and interrupt the autoboot by pressing any key.
+1. Turn your raspberry pi on and let u-boot start, then interrupt the autoboot by pressing any key.
 1. You should load the kernel into the RAM. You can run this command in u-boot:
 
 
@@ -211,7 +211,7 @@ If you got something like that, then you booted the kernel successfully. The las
 reference:
 https://www.kernel.org/doc/html/v4.14/admin-guide/kernel-parameters.html
 
-# 7- Build the filesystem
+# 8- Build the filesystem
 
 We'll use <a href="https://busybox.net/">busybox</a> to build the root filesystem. 
 
@@ -224,7 +224,7 @@ We'll use <a href="https://busybox.net/">busybox</a> to build the root filesyste
 
     `make menuconfig`
 
-    - Make the a static binary (no shared libs). We can find that option under 
+    - Make a static binary (no shared libs). We can find that option under 
 
     `settings->Build Static Binary`
 
