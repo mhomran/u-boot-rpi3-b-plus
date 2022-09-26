@@ -16,10 +16,10 @@ I use a USB drive to boot my custom kernel and not an SD card. A USB drive is mu
 First, the ROM bootloader shipped with the vendor starts. Then, the second bootloader `bootcode.bin` starts. After that, `start.elf` starts and makes a Flattened Device Tree (FDT) using the device tree binary .dtb in the boot folder and applies overlays that're written in `config.txt`.
 
 
-It's important to mention how to apply a device tree overlay when it comes to raspberry pi. `u-boot` uses a library called `libfdt` to deal with device trees and apply overlays to them. Unfortunately, raspberry pi device trees don't follow the standard that this library uses. So, whenever I tryied to apply an overlay, it always fails with `FDT_ERR_NOTFOUND`.
+It's important to mention how to apply a device tree overlay when it comes to raspberry pi. `u-boot` uses a library called `libfdt` to deal with device trees and apply overlays to them. Unfortunately, raspberry pi device trees don't follow the standard that this library uses. So, whenever I tried to apply an overlay, it always fails with `FDT_ERR_NOTFOUND`.
 
 
-To get over this problem, we can <b>reuse</b> the same `FDT` offered by `start.elf` and make u-boot pypasses it to the kernel. This will allow us to enable whatever overlays we want by writing their names in `config.txt`. The downside of this method is that we always need to provide the device tree in the boot directory. It can't be downloaded from an
+To get over this problem, we can <b>reuse</b> the same `FDT` offered by `start.elf` and make u-boot pass it to the kernel. This will allow us to enable whatever overlays we want by writing their names in `config.txt`. The downside of this method is that we always need to provide the device tree in the boot directory. So, it can't be downloaded from an FTB server, for example.
 
 
 # 1- Prepare your USB drive
