@@ -176,30 +176,30 @@ Now let's consider booting the kernel step by step:
 1. You should load the kernel into the RAM. You can run this command in u-boot:
 
 
-`fatload usb 0 ${kernel_addr_r} Image`
-1. We have the address of the binary tree binary given to u-boot store in `prevbl_fdt_addr`. So, we don't need to load any DTB.
+    `fatload usb 0 ${kernel_addr_r} Image`
+1. We have the address of the binary tree binary given to u-boot stored in `prevbl_fdt_addr`. So, we don't need to load any DTB.
 1. We need to specify the bootargs. You can run:
 
 
-`setenv bootargs "8250.nr_uarts=1 root=/dev/sda2 rootwait console=ttyS0,115200n8"`
+    `setenv bootargs "8250.nr_uarts=1 root=/dev/sda2 rootwait console=ttyS0,115200n8"`
 
 
-`8250.nr_uarts=1` specifies the number of serial ports supported. In our case, it's one serial port `ttyS0`.
+    `8250.nr_uarts=1` specifies the number of serial ports supported. In our case, it's one serial port `ttyS0`.
 
 
-`root=/dev/sda2` specify the partition of the root filesystem.
+    `root=/dev/sda2` specify the partition of the root filesystem.
 
 
-`rootwait` Wait (indefinitely) for the root device to show up. Useful for devices that are detected asynchronously (e.g. USB and MMC devices).
+    `rootwait` Wait (indefinitely) for the root device to show up. Useful for devices that are detected asynchronously (e.g. USB and MMC devices).
 
 
-`console=ttyS0,115200n8` tells the kernel to start a console for us on the serial port `ttyS0` with the baudrate of 115200 with no parity and the data size is 8 bytes.
+    `console=ttyS0,115200n8` tells the kernel to start a console for us on the serial port `ttyS0` with the baudrate of 115200 with no parity and the data size is 8 bytes.
 
 
 1. Now, we're ready to boot our kernel using the command:
 
 
-`booti ${kernel_addr_r} - ${prevbl_addr_r}`
+    `booti ${kernel_addr_r} - ${prevbl_addr_r}`
 
 
 <img src="imgs/no-init.png">
