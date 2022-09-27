@@ -6,6 +6,13 @@ In this repository, I will demonstrate how to boot a 64-bit kernel using u-boot 
 I use a USB drive to boot my custom kernel and not an SD card. A USB drive is much easier for you to remove and plug back in again. Luckily, rpi3b+ can boot from a USB drive without any necessary configuration. All you just need to do is to unplug the SD card if it exists.
 
 
+# Hardware
+
+1. Raspberry pi 3b+
+1. USB drive
+1. USB to TTL
+
+We'll use USB to TTL to see the kernel messages. It will be connected to the pins 14 and 15 in the raspberry pi. The USB drive will hold our custom linux OS.
 
 # Raspberry pi boot process
 
