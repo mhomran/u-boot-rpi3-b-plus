@@ -296,3 +296,57 @@ Plug in the USB drive into the raspberry pi and start the kernel by doing step #
 
 <img src="imgs/rootfs.png">
 My root filesystem !
+
+# Optional
+
+
+## Load the image from a (trivial) FTP server.
+
+The `u-boot` supports a command (`tftpboot`) that can help us load the kernel from an FTP server. The Raspberry Pi is connected to the host machine using <b>Ethernet</b>. To be able to load the image from your host machine onto the Raspberry Pi:
+
+1. From the host machine side:
+
+    - Setup a static IP address for your host machine's Ethernet. I chose `192.168.2.3`.
+
+    - Install the trivial FTP server using this command (assuming you are using Ubuntu OS):
+     
+
+        `sudo apt install tftp-hpa`
+
+    - Configure `tftpd-hpa` by editing `/etc/default/tftpd-hpa`. You need to put your chosen host IP address in the variable `TFTP_ADDRESS`.
+
+        ```
+        TFTP_USERNAME="tftp"
+        TFTP_DIRECTORY="/var/lib/tftpboot"
+        TFTP_ADDRESS="192.168.2.3:69"
+        TFTP_OPTIONS="--secure
+        ```
+
+    - Move the kernel `Image` to `/var/lib/tftpboot`.
+
+1. From the Raspberry Pi side:
+
+    - Start your Raspberry Pi and interrupt the u-boot autoboot.
+     
+    - Then, set two environment variables that indicate the host and the target IP addresses. The first one is `serverip, which sets the server IP address, which is `192.168.2.3` in my case. The second one is `ipaddr` which indicates the Raspberry Pi IP address, which is `192.168.2.2 in my case.
+
+
+        `setenv serverip 192.168.2.3`
+        `setenv ipaddr 192.168.2.2`
+
+    - Load the kernel using this command:
+ 
+
+        `tftpboot ${kernel_addr_r} Image`
+
+<b>Note:</b> The reason I used this IP address specifically is that, according to the routing table, my ethernet interface was chosen to process internet traffic when I chose an IP address in the form of `192.168.1.x`. I wanted the internet traffic to be routed to my wireless interface instead.
+
+<b>Note:</b> Sometimes when you reboot your host machine, the tftp server fails, so you need to restart it using:
+
+`service tftpd-hpa restart`
+
+You can check its status using:
+
+`service tftpd-hpa status`
+
+<img src="imgs/tftpboot.png">
