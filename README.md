@@ -300,7 +300,7 @@ My root filesystem !
 # Optional
 
 
-## Load the image from a (trivial) FTP server.
+## Load the image from a (trivial) FTP server
 
 The `u-boot` supports a command (`tftpboot`) that can help us load the kernel from an FTP server. The Raspberry Pi is connected to the host machine using <b>Ethernet</b>. To be able to load the image from your host machine onto the Raspberry Pi:
 
@@ -328,14 +328,13 @@ The `u-boot` supports a command (`tftpboot`) that can help us load the kernel fr
 
     - Start your Raspberry Pi and interrupt the u-boot autoboot.
      
-    - Then, set two environment variables that indicate the host and the target IP addresses. The first one is `serverip, which sets the server IP address, which is `192.168.2.3` in my case. The second one is `ipaddr` which indicates the Raspberry Pi IP address, which is `192.168.2.2 in my case.
-
+    - Then, set two environment variables that indicate the host and the target IP addresses. The first one is `serverip`, which sets the server IP address, which is `192.168.2.3` in my case. The second one is `ipaddr` which indicates the Raspberry Pi IP address, which is `192.168.2.2` in my case.
 
         `setenv serverip 192.168.2.3`
+
         `setenv ipaddr 192.168.2.2`
 
     - Load the kernel using this command:
- 
 
         `tftpboot ${kernel_addr_r} Image`
 
