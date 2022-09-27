@@ -40,7 +40,7 @@ There are vendor-specific files that should exist in the `boot` filesystem. Thes
 1. `config.txt`: Contains many configuration parameters for setting up the Raspberry Pi. 
 1. `fixup.dat`: This is a linker file.
 
-Those files (except for `config.txt`) can be found in the firmware repository of raspberry pi <a href="https://github.com/raspberrypi/firmware/tree/master/boot">here</a>. `config.txt` is created and populated manually (this will be discussed later). You can leave empty for now.
+Those files (except for `config.txt`) can be found in the firmware repository of raspberry pi <a href="https://github.com/raspberrypi/firmware/tree/master/boot">here</a>. `config.txt` is created and populated manually (this will be discussed later). You can leave it empty for now.
 
 <img src="imgs/vendor-specific.png">
 
