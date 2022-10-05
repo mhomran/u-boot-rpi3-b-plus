@@ -28,8 +28,8 @@ It's important to mention how to apply a device tree overlay when it comes to ra
 
 To get over this problem, we can <b>reuse</b> the same `FDT` offered by `start.elf` and make u-boot pass it to the kernel. This will allow us to enable whatever overlays we want by writing their names in `config.txt`. The downside of this method is that we always need to provide the device tree in the boot directory. So, it can't be downloaded from an FTB server, for example.
 
-
-# 1- Prepare your USB drive
+# Steps
+## 1- Prepare your USB drive
 
 Your USB drive should have two partitions. One should be in `FAT` format. Usually, it's called `boot`. This filesystem will hold the kernel files, the bootloaders, device trees, and overlays. Another one can be in ext4 format. This one holds the linux file system. It's usually called `rootfs`. The file system size should be large enough to hold the content in it.
 
@@ -38,7 +38,7 @@ You can partition your USB drive using either the Ubuntu Disks utility or `fdisk
 <img src="imgs/partitions.png">
 This is my USB drive partitions.
 
-# 2- Vendor-specific bootloaders and files
+## 2- Vendor-specific bootloaders and files
 
 There are vendor-specific files that should exist in the `boot` filesystem. These files are:
 
@@ -51,7 +51,7 @@ Those files (except for `config.txt`) can be found in the firmware repository of
 
 <img src="imgs/vendor-specific.png">
 
-# 3- Build a Device Tree Binary (DTB)
+## 3- Build a Device Tree Binary (DTB)
 
 u-boot expects a flattened device tree (FDT) from the start.elf bootloader. The start.elf bootloader needs a device tree binary.dtb file to turn it into an FDT and pass it to u-boot. At this moment, we don't have one. So, we need to compile a device tree source first.
 
@@ -86,7 +86,7 @@ you can install it on ubuntu using this command:
 <img src="imgs/dtb.png">
 
 
-# 4- Configure the raspberry pi through `config.txt`
+## 4- Configure the raspberry pi through `config.txt`
 
 Your `config.txt` should have these lines:
 
@@ -102,7 +102,7 @@ Your `config.txt` should have these lines:
 
 - `device_tree` specifiy the name of the `.dtb` file to be loaded.
 
-# 5- `u-boot.bin` build
+## 5- `u-boot.bin` build
 
 1. clone `u-boot` repository
 
@@ -147,7 +147,7 @@ Your `config.txt` should have these lines:
 <img src="imgs/u-boot-op.png">
 u-boot is bootloaded !
 
-# 6- Building the kernel
+## 6- Building the kernel
 
 In step 3, we just built the device tree binaries. There are two more steps to build our custom kernel:
     
@@ -170,7 +170,7 @@ Note: you can setup a trivial ftp server and grap the image from the host machin
 
 <img src="imgs/kernel-image.png">
 
-# 7- Booting the kernel and the `bootargs`
+## 7- Booting the kernel and the `bootargs`
 
 
 For u-boot to be able to boot the kernel, it should have the kernel and the device tree binary address. The kernel expects some boot arguments. Boot arguments configure things in the kernel. For u-boot to be able to pass the boot arguments, we need to put them in an environment variable `bootargs` using the command `setenv`.
@@ -218,7 +218,7 @@ If you got something like that, then you booted the kernel successfully. The las
 reference:
 https://www.kernel.org/doc/html/v4.14/admin-guide/kernel-parameters.html
 
-# 8- Build the filesystem
+## 8- Build the filesystem
 
 We'll use <a href="https://busybox.net/">busybox</a> to build the root filesystem. 
 
@@ -349,3 +349,9 @@ You can check its status using:
 `service tftpd-hpa status`
 
 <img src="imgs/tftpboot.png">
+
+# References
+
+<a href="https://bootlin.com/doc/legacy/elfs/embedded_lfs.pdf">Embedded Linux From Scratch</a> [English]
+
+<a href="https://www.youtube.com/playlist?list=PLkH1REggdbJpFXAzQqpjZgV1oghPsf9OH">Embedded Linux Youtube Playlist</a> [Arabic]
